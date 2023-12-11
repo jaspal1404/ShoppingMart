@@ -24,7 +24,7 @@ class ItemRequest(BaseModel):
     category: str
     price: float
     quantity: int
-    delivery_channel: str
+    delivery_method: str
     store_id: int
 
 
@@ -35,7 +35,7 @@ class CartRequest(BaseModel):
     category: str
     price: float
     quantity: int
-    delivery_channel: str
+    delivery_method: str
     user_id: int
     item_id: int
 
