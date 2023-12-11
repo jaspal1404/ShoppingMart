@@ -69,7 +69,7 @@ async def add_item(db: db_dependency, item: ItemRequest):
 
     item_model = db.query(Items).filter(Items.name == item.name).first()
     if item_model is None:
-        item_model = Items(**item.dict())
+        item_model = Items(**item.model_dump())
         db.add(item_model)
         db.commit()
     else:
