@@ -59,14 +59,14 @@ async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: s
     else:
         if item.quantity >= quantity:
             if item.delivery_method == delivery_method:
-                return {"response": True, "reason": "Item available & added to cart. Would you like to add another item ?"}
+                return {"status": True, "message": "Item available & added to cart. Would you like to add another item ?"}
             else:
-                return {"response": False, "reason": "Item not available for " + delivery_method + ". Would you like to try a different delivery method ?"}
+                return {"status": False, "message": "Item not available for " + delivery_method + ". Would you like to try a different delivery method ?"}
         else:
             if item.delivery_method == delivery_method:
-                return {"response": False, "reason": "Only " + str(item.quantity) + " units of the item available. Would you like to proceed ?"}
+                return {"status": False, "message": "Only " + str(item.quantity) + " units of the item available. Would you like to proceed ?"}
             else:
-                return {"response": False, "reason": "Only " + str(item.quantity) + " units of the item available, but not available for " + delivery_method + ". Would you like to try a different delivery method ?"}
+                return {"status": False, "message": "Only " + str(item.quantity) + " units of the item available, but not available for " + delivery_method + ". Would you like to try a different delivery method ?"}
 
 
 
