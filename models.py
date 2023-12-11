@@ -39,6 +39,6 @@ class Cart(Base):
     category = Column(String)
     quantity = Column(Integer)
     price = Column(Float)
-    delivery_channel = Column(String)
+    delivery_method = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"))
     item_id = Column(Integer, ForeignKey("items.id"))
