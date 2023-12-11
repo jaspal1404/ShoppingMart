@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from pydantic import BaseModel, Field
 from starlette import status
-from models import Items, access_cart
+from models import Items, Cart
 from typing import Annotated
 from database import SessionLocal
 from sqlalchemy.orm import Session
