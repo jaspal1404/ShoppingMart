@@ -18,24 +18,33 @@ def get_db():
 
 
 class ItemRequest(BaseModel):
-    id: str
     name: str
     description: str
     brand: str
     category: str
     price: float
     quantity: int
-    driveup_allowed: bool
-    shipping_allowed: bool
-    store_pickup_allowed: bool
+    delivery_channel: str
     store_id: int
+
+
+class CartRequest(BaseModel):
+    name: str
+    description: str
+    brand: str
+    category: str
+    price: float
+    quantity: int
+    delivery_channel: str
+    user_id: int
+    item_id: int
 
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
 
 
-@router.get("/get-item/", status_code=status.HTTP_200_OK)
+@router.get("/get-item", status_code=status.HTTP_200_OK)
 async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: str, quantity: int):
 
     item = db.query(Items).filter(Items.name == item_name).first()
