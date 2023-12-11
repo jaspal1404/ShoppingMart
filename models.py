@@ -13,7 +13,7 @@ class Items(Base):
     quantity = Column(Integer)
     price = Column(Float)
     delivery_method = Column(String)
-    store_id = Column(String)
+    store_id = Column(Integer)
 
 
 class Users(Base):
