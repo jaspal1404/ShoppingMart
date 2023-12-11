@@ -52,8 +52,12 @@ async def get_all_items(db: db_dependency):
 
 @router.get("/get-item", status_code=status.HTTP_200_OK)
 async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: str, quantity: int):
-
-    item = db.query(Items).filter(Items.name == item_name).first()
+    
+    if (delivery_method == "pickup" or delivery_method == "pick up"):
+        delivery_method = "store pickup"
+    elif (delivery_method == "drive up"):
+        delivery_method = "driveup"
+    item = db.query(Items).filter(Items.name == item_name).filter(Items.delivery_method == delivery_method).first()
     if item is None:
         return {"response": False, "reason": "Item not found! Would you like to try again ?"}
     else:
