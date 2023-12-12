@@ -52,18 +52,18 @@ async def get_all_items(db: db_dependency):
 
 @router.get("/get-item", status_code=status.HTTP_200_OK)
 async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: str, quantity: int):
-    
+
     if (delivery_method == "pickup" or delivery_method == "pick up"):
         delivery_method = "store pickup"
     elif (delivery_method == "drive up"):
         delivery_method = "driveup"
     item = db.query(Items).filter(Items.name == item_name).first()
     if item is None:
-        return {"status": False, "message": "Item not found! Would you like to try again ?"}
+        return {"status": False, "message": "Item not found! Would you like to try again?"}
     else:
         if item.quantity >= quantity:
             if item.delivery_method == delivery_method:
-                return {"status": True, "message": "Item available & added to cart. Would you like to add another item?"}
+                return {"status": True, "message": "Item added to cart. Would you like to add another item?"}
             else:
                 return {"status": False, "message": "Item not available for " + delivery_method + ". Would you like to try a different delivery method?"}
         else:
