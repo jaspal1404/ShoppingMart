@@ -59,24 +59,24 @@ async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: s
         delivery_method = "driveup"
     if (brand == ""):
         item = db.query(Items).filter(Items.name == item_name).all()
-    else:
-        item = db.query(Items).filter(Items.name == item_name).filter(Items.brand == brand).all()
-    if item is None:
-        return {"status": False, "message": "Item not found! Would you like to try again?"}
-    else:
         if len(item) > 1:
             return {"status": False, "message": "Multiple brands available for the item, any specific one you are looking for?"}
-        else:
-            if item.quantity >= quantity:
-                if item.delivery_method == delivery_method:
-                    return {"status": True, "message": "Item added to cart. Would you like to add another item?"}
-                else:
-                    return {"status": False, "message": "Item not available for " + delivery_method + ". Would you like to try a different delivery method?"}
+    else:
+        item = db.query(Items).filter(Items.name == item_name).filter(Items.brand == brand).all()
+    if len(item) == 0:
+        return {"status": False, "message": "Item not found! Would you like to try again?"}
+    else:
+        item = item[0]
+        if item.quantity >= quantity:
+            if item.delivery_method == delivery_method:
+                return {"status": True, "message": "Item added to cart. Would you like to add another item?"}
             else:
-                if item.delivery_method == delivery_method:
-                    return {"status": False, "message": "Only " + str(item.quantity) + " units of the item available. Would you like to proceed?"}
-                else:
-                    return {"status": False, "message": "Only " + str(item.quantity) + " units of the item available, but not available for " + delivery_method + ". Would you like to try a different delivery method?"}
+                return {"status": False, "message": "Item not available for " + delivery_method + ". Would you like to try a different delivery method?"}
+        else:
+            if item.delivery_method == delivery_method:
+                return {"status": False, "message": "Only " + str(item.quantity) + " units of the item available. Would you like to proceed?"}
+            else:
+                return {"status": False, "message": "Only " + str(item.quantity) + " units of the item available, but not available for " + delivery_method + ". Would you like to try a different delivery method?"}
 
 
 
