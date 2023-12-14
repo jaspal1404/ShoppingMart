@@ -60,7 +60,7 @@ async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: s
     if (brand == ""):
         item = db.query(Items).filter(Items.name == item_name).all()
     else:
-        item = db.query(Items).filter(Items.name == item_name).all()
+        item = db.query(Items).filter(Items.name == item_name).filter(Items.brand == brand).all()
     if item is None:
         return {"status": False, "message": "Item not found! Would you like to try again?"}
     else:
