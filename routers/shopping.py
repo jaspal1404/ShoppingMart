@@ -109,6 +109,7 @@ async def add_to_cart(db: db_dependency, item_name: str, delivery_method: str, q
     cart_item.category = item.category
     cart_item.quantity = quantity
     cart_item.price = item.price
+    cart_item.delivery_method = item.delivery_method
     cart_item.item_id = item.id
     cart_item.user_id = 1
 
