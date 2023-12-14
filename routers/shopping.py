@@ -40,6 +40,15 @@ class CartRequest(BaseModel):
     item_id: int
 
 
+class UserRequest(BaseModel):
+    email: str
+    username: str
+    first_name: str
+    last_name: str
+    hashed_password: str
+    is_active: bool
+
+
 db_dependency = Annotated[Session, Depends(get_db)]
 
 
@@ -57,6 +66,7 @@ async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: s
         delivery_method = "store pickup"
     elif (delivery_method == "drive up"):
         delivery_method = "driveup"
+
     if (brand == ""):
         item = db.query(Items).filter(Items.name == item_name.lower()).all()
         if len(item) > 1:
@@ -92,9 +102,25 @@ async def add_item(db: db_dependency, item: ItemRequest):
         raise HTTPException(status_code=404, detail="Item already exists")
 
 
+@router.post("/add-user", status_code=status.HTTP_201_CREATED)
+async def add_user(db: db_dependency, user: UserRequest):
+
+    user_model = db.query(Users).filter(Users.username == user.username).first()
+    if user_model is None:
+        user_model = Users(**user.model_dump())
+        db.add(user_model)
+        db.commit()
+    else:
+        raise HTTPException(status_code=404, detail="User already exists")
+
 
 @router.post("/add-to-cart", status_code=status.HTTP_201_CREATED)
 async def add_to_cart(db: db_dependency, item_name: str, delivery_method: str, quantity: int, brand: str = ""):
+
+    if (delivery_method == "pickup" or delivery_method == "pick up"):
+        delivery_method = "store pickup"
+    elif (delivery_method == "drive up"):
+        delivery_method = "driveup"
 
     if brand != "":
         item = db.query(Items).filter(Items.name == item_name.lower()).filter(Items.delivery_method == delivery_method.lower())\
