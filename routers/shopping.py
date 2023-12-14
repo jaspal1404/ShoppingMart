@@ -67,7 +67,6 @@ async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: s
         if len(item) > 1:
             return {"status": False, "message": "Multiple brands available for the item, any specific one you are looking for?"}
         else:
-            item = item[0]
             if item.quantity >= quantity:
                 if item.delivery_method == delivery_method:
                     return {"status": True, "message": "Item added to cart. Would you like to add another item?"}
