@@ -58,11 +58,11 @@ async def get_item_by_name(db: db_dependency, item_name: str, delivery_method: s
     elif (delivery_method == "drive up"):
         delivery_method = "driveup"
     if (brand == ""):
-        item = db.query(Items).filter(Items.name == item_name).all()
+        item = db.query(Items).filter(Items.name == item_name.lower()).all()
         if len(item) > 1:
             return {"status": False, "message": "Multiple brands available for the item, any specific one you are looking for?"}
     else:
-        item = db.query(Items).filter(Items.name == item_name).filter(Items.brand == brand).all()
+        item = db.query(Items).filter(Items.name == item_name.lower()).filter(Items.brand == brand.lower()).all()
     if len(item) == 0:
         return {"status": False, "message": "Item not found! Would you like to try again?"}
     else:
@@ -97,10 +97,10 @@ async def add_item(db: db_dependency, item: ItemRequest):
 async def add_to_cart(db: db_dependency, item_name: str, delivery_method: str, quantity: int, brand: str = ""):
 
     if brand != "":
-        item = db.query(Items).filter(Items.name == item_name).filter(Items.delivery_method == delivery_method)\
-            .filter(Items.brand == brand).first()
+        item = db.query(Items).filter(Items.name == item_name.lower()).filter(Items.delivery_method == delivery_method.lower())\
+            .filter(Items.brand == brand.lower()).first()
     else:
-        item = db.query(Items).filter(Items.name == item_name).filter(Items.delivery_method == delivery_method).first()
+        item = db.query(Items).filter(Items.name == item_name.lower()).filter(Items.delivery_method == delivery_method.lower()).first()
 
     cart_item = Cart()
     cart_item.name = item.name
